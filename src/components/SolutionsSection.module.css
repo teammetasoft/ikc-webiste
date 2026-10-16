@@ -1,0 +1,381 @@
+.section {
+  padding: 6rem 3rem;
+  background-color: var(--bg-dark);
+  position: relative;
+  z-index: 20;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 3.5rem;
+}
+
+.sectionBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--gold-primary);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 3.2rem;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text-light);
+}
+
+.italicWord {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  color: #E2D2B0;
+}
+
+.viewAllBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+}
+
+.viewAllBtn:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-primary);
+  background: rgba(197, 160, 89, 0.1);
+}
+
+.blueprintWrapper {
+  display: grid;
+  grid-template-columns: 290px 1fr 290px;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+}
+
+.svgOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.connectLine {
+  stroke: rgba(197, 160, 89, 0.25);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  transition: all 0.4s ease;
+}
+
+.activeConnectLine {
+  stroke: var(--gold-primary);
+  stroke-width: 2.5;
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.9));
+}
+
+.glowingDot {
+  filter: drop-shadow(0 0 10px var(--gold-primary));
+}
+
+.leftSolutionsList, .rightSolutionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 14;
+}
+
+.solutionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(20, 18, 16, 0.95) 0%, rgba(10, 9, 8, 0.98) 100%);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.solutionCard:hover, .activeCard {
+  border-color: rgba(197, 160, 89, 0.3);
+  box-shadow: 0 8px 30px rgba(197, 160, 89, 0.12);
+  transform: translateY(-2px);
+}
+
+.cardGlow {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  height: 320px;
+  background: radial-gradient(ellipse at right, rgba(197, 160, 89, 0.25) 0%, rgba(197, 160, 89, 0.0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  border-right: 1px solid rgba(197, 160, 89, 0.4);
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.solutionCard:hover .cardGlow, .activeCard .cardGlow {
+  opacity: 1;
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0.25rem;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardIcon {
+  color: var(--gold-primary);
+  opacity: 0.8;
+}
+
+.num {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--gold-primary);
+  opacity: 0.8;
+}
+
+.itemTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.itemDesc {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+/* Floorplan Interactive Area */
+.floorplanContainer {
+  position: relative;
+  width: 100%;
+  border-radius: 0;
+  overflow: visible;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  perspective: 1000px;
+}
+
+.floorplanImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: brightness(1.08) contrast(1.08) drop-shadow(0 25px 35px rgba(0, 0, 0, 0.7));
+  animation: subtlePulse 5s infinite ease-in-out;
+}
+
+@keyframes subtlePulse {
+  0% {
+    filter: brightness(1.08) contrast(1.08) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.75));
+  }
+  50% {
+    filter: brightness(1.14) contrast(1.1) drop-shadow(0 30px 40px rgba(197, 160, 89, 0.25));
+  }
+  100% {
+    filter: brightness(1.08) contrast(1.08) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.75));
+  }
+}
+
+.pinMark {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pinBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #0A0B0D;
+  background: var(--gold-primary);
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  opacity: 0.85;
+  transition: all 0.3s ease;
+}
+
+.pinDot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 30%, var(--gold-primary) 100%);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 16px var(--gold-primary), 0 0 24px #FFFFFF;
+  transition: all 0.3s ease;
+}
+
+.pinRipple {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-primary);
+  animation: pinPulse 1.8s infinite ease-out;
+}
+
+.activePin .pinBadge {
+  opacity: 1;
+  transform: scale(1.15);
+  background: #FFFFFF;
+  color: #0A0B0D;
+  box-shadow: 0 0 12px var(--gold-primary);
+}
+
+.activePin .pinDot {
+  transform: scale(1.4);
+  background: #FFFFFF;
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 24px var(--gold-primary), 0 0 36px #FFFFFF;
+}
+
+.expandBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(10, 11, 13, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.expandBtn:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-primary);
+}
+
+@keyframes pinPulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.mobileTimelineContainer {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .blueprintWrapper {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    position: relative;
+    padding-left: 1.75rem;
+  }
+  .mobileTimelineContainer {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.35rem;
+    width: 4px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .mobileTimelineTrack {
+    position: absolute;
+    inset: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+  .mobileTimelineProgress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold-primary) 0%, #FFFFFF 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--gold-primary);
+    transition: height 0.1s linear;
+  }
+  .mobileTimelineDot {
+    position: absolute;
+    bottom: -4px;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold-primary);
+    box-shadow: 0 0 12px var(--gold-primary), 0 0 20px #FFFFFF;
+  }
+  .floorplanContainer {
+    display: none;
+  }
+  .svgOverlay {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 1.5rem;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .title {
+    font-size: 2.3rem;
+  }
+}
+
