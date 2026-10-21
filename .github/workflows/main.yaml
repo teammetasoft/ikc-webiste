@@ -1,0 +1,82 @@
+name: s3-live-deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  S3_BUCKET: metasoft-frontend/italiankitchenconcept.com
+  AWS_REGION: ap-south-1
+  WEB_DIR: /var/www/italiankitchenconcept.com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies & Build Static Export
+        run: |
+          npm ci --force
+          npm run build
+
+      - name: Sync Exported Build to S3
+        run: aws s3 sync ./out/ s3://$S3_BUCKET/ --delete
+
+      - name: Configure SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PROD_SSH_KEY }}" > ~/.ssh/prod.key
+          chmod 600 ~/.ssh/prod.key
+          cat << 'EOF' > ~/.ssh/config
+          Host prod-server
+            HostName ${{ secrets.PROD_SSH_HOST }}
+            User ${{ secrets.PROD_SSH_USER }}
+            IdentityFile ~/.ssh/prod.key
+            StrictHostKeyChecking no
+          EOF
+
+      - name: Generate Deployment Script
+        run: |
+          cat << 'EOF' > deploy.sh
+          #!/bin/bash
+          set -e
+          echo "Starting static site deployment..."
+
+          export AWS_ACCESS_KEY_ID='${{ secrets.PROD_AWS_ACCESS_KEY_ID }}'
+          export AWS_SECRET_ACCESS_KEY='${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}'
+          export AWS_DEFAULT_REGION='${{ env.AWS_REGION }}'
+
+          sudo mkdir -p ${{ env.WEB_DIR }}
+          sudo chown -R ubuntu:www-data ${{ env.WEB_DIR }}
+          sudo chmod -R 775 ${{ env.WEB_DIR }}
+
+          echo "Syncing build files from S3 to ${{ env.WEB_DIR }}..."
+          aws s3 sync s3://${{ env.S3_BUCKET }}/ ${{ env.WEB_DIR }}/ --delete
+
+          echo "Reloading Nginx..."
+          sudo nginx -t && sudo systemctl reload nginx
+          echo "Deployment finished successfully."
+          EOF
+          chmod +x deploy.sh
+
+      - name: Transfer Deploy Script to EC2
+        run: scp -i ~/.ssh/prod.key deploy.sh prod-server:/tmp/deploy.sh
+
+      - name: Execute Deploy Script on EC2
+        run: ssh -i ~/.ssh/prod.key prod-server "bash /tmp/deploy.sh && rm -f /tmp/deploy.sh"
