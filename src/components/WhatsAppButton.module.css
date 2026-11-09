@@ -1,7 +1,7 @@
 .button {
   position: fixed;
-  bottom: 90px;
-  right: 70px;
+  bottom: 80px;
+  right: 60px;
   z-index: 9999;
   display: flex;
   align-items: center;
