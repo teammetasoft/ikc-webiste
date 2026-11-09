@@ -2,7 +2,10 @@ import Navbar from '@/components/Navbar';
 import HeroStaticSection from '@/components/HeroStaticSection';
 import HeroCanvasScroll from '@/components/HeroCanvasScroll';
 import PhilosophySection from '@/components/PhilosophySection';
+import SolutionsSection from '@/components/SolutionsSection';
+import CraftsmanshipSection from '@/components/CraftsmanshipSection';
 import StatsSection from '@/components/StatsSection';
+import ProjectsSection from '@/components/ProjectsSection';
 import BrandLogosMarquee from '@/components/BrandLogosMarquee';
 import Footer from '@/components/Footer';
 
@@ -13,7 +16,10 @@ export default function Home() {
       <HeroStaticSection />
       <HeroCanvasScroll />
       <PhilosophySection />
+      <SolutionsSection />
+      <CraftsmanshipSection />
       <StatsSection />
+      <ProjectsSection />
       <BrandLogosMarquee />
       <Footer />
     </main>
