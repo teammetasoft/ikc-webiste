@@ -9,15 +9,16 @@
   padding: 0 16px 0 6px;
   height: 42px;
   border-radius: 999px;
-  background: #c5a059;
-  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .button:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 24px rgba(197, 160, 89, 0.55), 0 3px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
 
 /* Green circle wrapping the WhatsApp icon */
@@ -38,10 +39,10 @@
 }
 
 .label {
-  color: #fff;
+  color: #c5a059;
   font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
