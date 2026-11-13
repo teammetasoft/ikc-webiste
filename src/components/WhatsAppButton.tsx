@@ -5,7 +5,7 @@ import styles from './WhatsAppButton.module.css';
 
 export default function WhatsAppButton() {
   const phone = '97143496392';
-  const href = `https://wa.me/${phone}?text=Hello%20%F0%9F%91%8B%20Here%20to%20help%20you`;
+  const href = `https://wa.me/${phone}?text=Hello! I'd like to speak with an Italian Concept specialist about my requirements.`;
 
   // Start hidden — show only after the preloader unmounts
   const [visible, setVisible] = useState(false);
