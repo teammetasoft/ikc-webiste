@@ -1,9 +1,34 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import styles from './WhatsAppButton.module.css';
 
 export default function WhatsAppButton() {
   const phone = '97143496392';
-  // 👋 = %F0%9F%91%8B (pre-encoded to avoid emoji rendering issues)
-  const href = `https://wa.me/${phone}?text=Hello! I’d like to speak with an Italian Concept specialist about my requirements.`;
+  const href = `https://wa.me/${phone}?text=Hello%20%F0%9F%91%8B%20Here%20to%20help%20you`;
+
+  // Start hidden — show only after the preloader unmounts
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const checkPreloader = () => {
+      const preloader = document.querySelector('[class*="preloaderWrapper"]');
+      if (!preloader) {
+        setVisible(true);
+      }
+    };
+
+    // Check immediately (in case preloader already gone)
+    checkPreloader();
+
+    // Watch for preloader removal from DOM
+    const observer = new MutationObserver(checkPreloader);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
+  if (!visible) return null;
 
   return (
     <a
